@@ -4,6 +4,18 @@
 
 {% block content %}
 
-<h1>Hello</h1>
+<div class="container">
+    <div class="row py-4">
+        <div class="col-md-12 my-2">
+            <h4>Welcome {{request.user.username}}</h4>
+        </div>
+        <div class="col-md-12 my-2">
+            <a href="#">Change Password</a>
+        </div>
+        <div class="col-md-12 my-2">
+            <a href="{% url 'logout' %}">Logout</a>
+        </div>
+    </div>
+</div>
 
 {% endblock content %}
