@@ -64,9 +64,8 @@ class UserRegistrationForm(forms.ModelForm):
         password = self.cleaned_data.get('password')
         password2 = self.data.get('password2')
 
-        if password and password2:
-            if password != password2:
-                raise forms.ValidationError("Password mismatch")
+        if password != password2:
+            raise forms.ValidationError("Password mismatch")
 
         return password           
 
@@ -78,4 +77,43 @@ class UserRegistrationForm(forms.ModelForm):
             user.save()
 
         return user
+
+
+class ChangePasswordForm(forms.Form):
+    current_password = forms.CharField(
+        max_length=150,
+        widget=forms.PasswordInput
+    )
+    new_password1 = forms.CharField(
+        max_length=150,
+        widget=forms.PasswordInput
+    )
+    new_password2 = forms.CharField(
+        max_length=150,
+        widget=forms.PasswordInput
+    )
+
+    def __init__(self, user, *args, **kwargs):
+        self.user = user
+        super().__init__(*args, **kwargs)
+
+        for field in self.fields:
+            self.fields[field].widget.attrs.update({"class": "form-control"})
+
+    def clean_current_password(self, *args, **kwargs):
+        current_password = self.cleaned_data.get('current_password')
+
+        if not self.user.check_password(current_password):
+            raise forms.ValidationError("Incorrect password")
+
+        return current_password
+
+    def clean_new_password1(self, *args, **kwargs):
+        new_password1 = self.cleaned_data.get('new_password1')
+        new_password2 = self.data.get('new_password2')
+
+        if new_password1 != new_password2:
+            raise forms.ValidationError("Password mismatch")
+
+        return new_password1
         

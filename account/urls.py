@@ -4,7 +4,8 @@ from .views import (
     Home,
     Login,
     Logout,
-    Registration
+    Registration,
+    ChangePassword
 )
 
 
@@ -13,5 +14,6 @@ urlpatterns = [
     path('login/', Login.as_view(), name='login'),
     path('logout/', Logout.as_view(), name='logout'),
     path('registration/', Registration.as_view(), name='registration'),
+    path('change_password/', ChangePassword.as_view(), name='change_password'),
 
 ]
