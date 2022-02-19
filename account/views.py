@@ -6,11 +6,17 @@ from django.utils.decorators import method_decorator
 from django.views.decorators.cache import never_cache
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.views import (
+    PasswordResetView,
+    PasswordResetConfirmView
+)
 
 from .forms import (
     LoginForm,
     UserRegistrationForm,
-    ChangePasswordForm
+    ChangePasswordForm,
+    SendEmailForm,
+    ResetPasswordConfirmForm
 )
 from .mixins import (
     LogoutRequiredMixin
@@ -87,4 +93,20 @@ class ChangePassword(LoginRequiredMixin, generic.FormView):
         user.save()
         messages.success(self.request, "Password changed Successfully !")
         return super().form_valid(form)
+
+
+class SendEmailToResetPassword(PasswordResetView):
+    template_name = 'account/password_reset.html'
+    form_class = SendEmailForm
+
+
+class ResetPasswordConfirm(PasswordResetConfirmView):
+    template_name = 'account/password_reset_confirm.html'
+    form_class = ResetPasswordConfirmForm
+    success_url = reverse_lazy('login')
+
+    def form_valid(self, form):
+        messages.success(self.request, "Password reset successfully !")
+        return super().form_valid(form)
+
 

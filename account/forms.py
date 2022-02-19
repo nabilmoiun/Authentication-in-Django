@@ -1,5 +1,8 @@
+import threading
+
 from django import forms
 from django.contrib.auth import get_user_model
+from django.contrib.auth.forms import PasswordResetForm
 
 
 User = get_user_model()
@@ -116,4 +119,74 @@ class ChangePasswordForm(forms.Form):
             raise forms.ValidationError("Password mismatch")
 
         return new_password1
+
+
+class SendEmailForm(PasswordResetForm, threading.Thread):
+        def __init__(self, *args, **kwargs):
+            super().__init__(*args, **kwargs)
+            threading.Thread.__init__(self)
+
+            for field in self.fields:
+                self.fields[field].widget.attrs.update({"class": "form-control"})
+
+        def clean_email(self):
+            if not User.objects.filter(email__iexact=self.cleaned_data.get('email')).exists():
+                raise forms.ValidationError("The email is not registered")
+
+            return self.cleaned_data.get('email')
+
+        def run(self) -> None:
+            return super().send_mail(
+                self.subject_template_name,
+                self.email_template_name,
+                self.context,
+                self.from_email,
+                self.to_email,
+                self.html_email_template_name, 
+            )
+            
+        def send_mail(self, subject_template_name, email_template_name, context, from_email, to_email, html_email_template_name):
+            self.subject_template_name = subject_template_name
+            self.email_template_name = email_template_name
+            self.context = context
+            self.from_email = from_email
+            self.to_email = to_email
+            self.html_email_template_name = html_email_template_name
+            
+            self.start()
+
+
+class ResetPasswordConfirmForm(forms.Form):
+    new_password1 = forms.CharField(
+        max_length=150,
+        widget=forms.PasswordInput
+    )
+    new_password2 = forms.CharField(
+        max_length=150,
+        widget=forms.PasswordInput
+    )
+
+    def __init__(self, user, *args, **kwargs):
+        self.user = user
+        super().__init__(*args, **kwargs)
+
+        for field in self.fields:
+            self.fields[field].widget.attrs.update({"class": "form-control"})
+
+    def clean_new_password1(self, *args, **kwargs):
+        new_password1 = self.cleaned_data.get('new_password1')
+        new_password2 = self.data.get('new_password2')
         
+        if new_password1 and new_password2:
+            if new_password1 != new_password2:
+                raise forms.ValidationError("Password mismatch")
+
+        return new_password1
+
+    def save(self, commit=True, *args, **kwargs):
+        self.user.set_password(self.cleaned_data.get('new_password1'))
+
+        if commit:
+            self.user.save()
+
+        return self.user

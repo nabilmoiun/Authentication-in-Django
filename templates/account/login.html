@@ -26,9 +26,12 @@
             <div class="form-group d-grid gap-2 my-3">
                 <button type="submit" class="btn btn-dark">Login</button>
             </div>
-            <div class="my-3 mb-2 d-flex align-items-center justify-content-center">
+            <div class="my-3 mb-2 d-flex flex-column align-items-center justify-content-center">
                 <p class="m-0">
                     Don't have an account ? Please <a class="text-decoration-none px-2 text-primary" href="{% url 'registration' %}">Register here</a>
+                </p>
+                <p class="py-2">
+                    <a class="text-decoration-none px-2 text-primary" href="{% url 'password_reset' %}">Forget password ?</a>
                 </p>
             </div>
         </form>
