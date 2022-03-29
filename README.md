@@ -72,3 +72,14 @@ So after successful completion of these you are ready to run the application by 
 Now open the browser go to ***localhost/8000/*** and you will see the home/login page of the application.
 
 
+***NB: you have to change the following configurations in settings.py to send email for password reset***
+
+
+    $ EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+    $ EMAIL_USE_TLS = True
+    $ EMAIL_HOST = "smtp.gmail.com"
+    $ EMAIL_HOST_USER = "example@gmail.com"
+    $ EMAIL_HOST_PASSWORD = "yourapppassword"
+    $ EMAIL_PORT = 587
+
+
