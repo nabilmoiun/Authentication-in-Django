@@ -22,7 +22,7 @@ Usage
 
 First clone this repo and go to the project root.
 
-    $ git clone git@github.com:MoinulHossainNabil/Authentication-in-Django.git
+    $ git clone https://github.com/nabilmoiun/Authentication-in-Django.git
     $ cd Authentication-in-Django
 
 I would recommend to work on a virtual environment. I have used ***virtualenv*** package to create a virtual environment you may wanna use other package. So install this as well if you already haven't.
