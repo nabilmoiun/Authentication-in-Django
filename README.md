@@ -44,7 +44,7 @@ Activate the virtual environment by the following command:
 
 If you are using git bash
 
-    $ source venv_name/Scripts/activate
+    $ source venv_name/Scripts/activate # venv_name\Scripts\activate in cmd
     
 If you are using CMD
 
