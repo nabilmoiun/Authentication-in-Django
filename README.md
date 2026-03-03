@@ -20,7 +20,7 @@ Project Summary and Features
 Usage
 =================
 
-First clone this repo and go to the project root.
+First, clone this repo and go to the project root.
 
     $ git clone https://github.com/nabilmoiun/Authentication-in-Django.git
     $ cd Authentication-in-Django
@@ -33,7 +33,7 @@ Now create you own virtual environment here and install the project required pac
 
     $ virtualenv venv_name
 
-Activate the virtual environment by the following command:
+Activate the virtual environment using the following command:
 
 
 ***On Linux***
@@ -60,12 +60,12 @@ Now install the package requirements by:
 Well your environment is ready now.
 
 Finally, you have to make migrations to get the app started and create a new superuser to interact with the admin dashboard.
-So run the following commands as follows:
+So, run the following commands as follows:
 
     $ python manage.py migrate
     $ python manage.py createsuperuser
 
-So after successful completion of these you are ready to run the application by the following command:
+After successful completion of these, you are ready to run the application by the following command:
 
     $ python manage.py runserver
     
